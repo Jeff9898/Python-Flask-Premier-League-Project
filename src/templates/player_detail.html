@@ -3,28 +3,61 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ player.second_name }}'s Data</title>
+  <title>{{ player.web_name }}'s Data</title>
+  <style>
+    .player-details {
+      width: 60%;
+      margin: 20px auto;
+      border: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .player-header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .player-image {
+      display: block;
+      margin: 0 auto;
+    }
+    ul {
+      list-style-type: none;
+      padding: 0;
+    }
+    li {
+      padding: 8px 0;
+    }
+  </style>
 </head>
 <body>
-<h1>{{ player.second_name }}'s Detailed Data</h1>
+<div class="player-details">
+  <div class="player-header">
+    <h1>{{ player.web_name }}'s Detailed Data</h1>
+    <img src="{{ player.image_url }}" alt="{{ player.web_name }}" class="player-image" style="width:110px; height:140px;">
+  </div>
 
-<!-- Player Image -->
-<img src="{{ player.image_url }}" alt="{{ player.second_name }}" style="width:110px; height:140px;">
+  <ul>
+    <li><strong>Price:</strong> £{{ player.price }}m</li>
+    <li><strong>Position:</strong> {{ player.position }}</li>
+    <li><strong>Team:</strong> {{ player.team }}</li>
+    <li><strong>Fixture:</strong> {{ player.fixture }}</li>
+    <li><strong>Average Points/Game:</strong> {{ player.avg_points_per_game }}</li>
+    <li><strong>Expected Points:</strong> {{ player.expected_points }}</li>
+    <li><strong>Expected Goals (xG):</strong> {{ player.xG }}</li>
+    <li><strong>Expected Assists (xA):</strong> {{ player.xA }}</li>
+    {% if player.injury_status %}
+    <li><strong>Injury Status:</strong> {{ player.injury_status }}</li>
+    <li><strong>Injury News:</strong> {{ player.injury_news }}</li>
+    {% endif %}
+  </ul>
 
-<ul>
-  <li><strong>Price:</strong> £{{ player.price }}m</li>
-  <li><strong>Position:</strong> {{ player.position }}</li>
-  <li><strong>Team:</strong> {{ player.team }}</li>
-  <li><strong>Avg Points/Game:</strong> {{ player.avg_points_per_game }}</li>
-  <li><strong>Expected Points:</strong> {{ player.expected_points }}</li>
-  <li><strong>Next Fixture:</strong> {{ player.fixture }}</li>
-  {% if player.injury_status %}
-  <li><strong>Injury Status:</strong> {{ player.injury_status }}</li>
-  <li><strong>Injury News:</strong> {{ player.injury_news }}</li>
-  {% endif %}
-</ul>
-<a href="/">Back to All Players</a>
+  <div style="text-align: center; margin-top: 20px;">
+    <a href="/">Back to All Players</a>
+  </div>
+</div>
 </body>
 </html>
+
 
 

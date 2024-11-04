@@ -25,43 +25,55 @@
     .desc::after {
       content: ' 🔽';
     }
+    .search-bar {
+      text-align: center;
+      margin: 20px;
+    }
   </style>
 </head>
 <body>
 <h1 style="text-align:center;">Fantasy Premier League Player Data</h1>
 
+<div class="search-bar">
+  <form method="get">
+    <input type="text" name="search" value="{{ search_query }}" placeholder="Search players, teams, positions...">
+    <button type="submit">Search</button>
+  </form>
+</div>
+
 <!-- Player Data Table -->
 <table>
   <thead>
   <tr>
-    <th><a href="?sort=second_name&order={{ 'desc' if sort_order == 'asc' and sort_column == 'second_name' else 'asc' }}" class="{{ 'asc' if sort_column == 'second_name' and sort_order == 'asc' else 'desc' }}">Second Name</a></th>
-    <th><a href="?sort=price&order={{ 'desc' if sort_order == 'asc' and sort_column == 'price' else 'asc' }}" class="{{ 'asc' if sort_column == 'price' and sort_order == 'asc' else 'desc' }}">Price (£m)</a></th>
-    <th><a href="?sort=position&order={{ 'desc' if sort_order == 'asc' and sort_column == 'position' else 'asc' }}" class="{{ 'asc' if sort_column == 'position' and sort_order == 'asc' else 'desc' }}">Position</a></th>
-    <th><a href="?sort=team&order={{ 'desc' if sort_order == 'asc' and sort_column == 'team' else 'asc' }}" class="{{ 'asc' if sort_column == 'team' and sort_order == 'asc' else 'desc' }}">Team</a></th>
-    <th><a href="?sort=avg_points_per_game&order={{ 'desc' if sort_order == 'asc' and sort_column == 'avg_points_per_game' else 'asc' }}" class="{{ 'asc' if sort_column == 'avg_points_per_game' and sort_order == 'asc' else 'desc' }}">Avg Points/Game</a></th>
-    <th><a href="?sort=expected_points&order={{ 'desc' if sort_order == 'asc' and sort_column == 'expected_points' else 'asc' }}" class="{{ 'asc' if sort_column == 'expected_points' and sort_order == 'asc' else 'desc' }}">Expected Points</a></th>
-    <th><a href="?sort=fixture&order={{ 'desc' if sort_order == 'asc' and sort_column == 'fixture' else 'asc' }}" class="{{ 'asc' if sort_column == 'fixture' and sort_order == 'asc' else 'desc' }}">Fixture</a></th>
-    <th><a href="?sort=injury_status&order={{ 'desc' if sort_order == 'asc' and sort_column == 'injury_status' else 'asc' }}" class="{{ 'asc' if sort_column == 'injury_status' and sort_order == 'asc' else 'desc' }}">Injury Status</a></th>
-    <th><a href="?sort=injury_news&order={{ 'desc' if sort_order == 'asc' and sort_column == 'injury_news' else 'asc' }}" class="{{ 'asc' if sort_column == 'injury_news' and sort_order == 'asc' else 'desc' }}">Injury News</a></th>
+    <th><a href="?sort=position&order={{ 'desc' if sort_order == 'asc' and sort_column == 'position' else 'asc' }}">Position</a></th>
+    <th><a href="?sort=web_name&order={{ 'desc' if sort_order == 'asc' and sort_column == 'web_name' else 'asc' }}">Name</a></th>
+    <th><a href="?sort=price&order={{ 'desc' if sort_order == 'asc' and sort_column == 'price' else 'asc' }}">Price</a></th>
+    <th><a href="?sort=team&order={{ 'desc' if sort_order == 'asc' and sort_column == 'team' else 'asc' }}">Team</a></th>
+    <th><a href="?sort=fixture&order={{ 'desc' if sort_order == 'asc' and sort_column == 'fixture' else 'asc' }}">Fixture</a></th>
+    <th><a href="?sort=avg_points_per_game&order={{ 'desc' if sort_order == 'asc' and sort_column == 'avg_points_per_game' else 'asc' }}">Average PPG</a></th>
+    <th><a href="?sort=expected_points&order={{ 'desc' if sort_order == 'asc' and sort_column == 'expected_points' else 'asc' }}">Expected Points</a></th>
+    <th title="Expected Goals"><a href="?sort=xG&order={{ 'desc' if sort_order == 'asc' and sort_column == 'xG' else 'asc' }}">xG</a></th>
+    <th title="Expected Assists"><a href="?sort=xA&order={{ 'desc' if sort_order == 'asc' and sort_column == 'xA' else 'asc' }}">xA</a></th>
   </tr>
   </thead>
   <tbody>
   {% for player in players %}
   <tr>
-    <td><a href="/player/{{ player.second_name|lower }}">{{ player.second_name }}</a></td>
-    <td>{{ player.price }}</td>
     <td>{{ player.position }}</td>
+    <td><a href="/player/{{ player.web_name|lower }}">{{ player.web_name }}</a></td>
+    <td>{{ player.price }}</td>
     <td>{{ player.team }}</td>
+    <td>{{ player.fixture }}</td>
     <td>{{ player.avg_points_per_game }}</td>
     <td>{{ player.expected_points }}</td>
-    <td>{{ player.fixture }}</td>
-    <td>{{ player.injury_status }}</td>
-    <td>{{ player.injury_news }}</td>
+    <td>{{ player.xG }}</td>
+    <td>{{ player.xA }}</td>
   </tr>
   {% endfor %}
   </tbody>
 </table>
 </body>
 </html>
+
 
 

@@ -12,12 +12,20 @@ def fetch_fpl_data():
         print(f"Failed to fetch data: {response.status_code}")
         return None
 
+def get_team_abbreviation(team_id, teams):
+    """Get team abbreviation from team ID."""
+    for team in teams:
+        if team['id'] == team_id:
+            return team['short_name']
+    return 'Unknown'
+
 def main():
-    # Fetch player data from the FPL API
+    # Fetch general player data and team data from the FPL API
     fpl_data = fetch_fpl_data()
 
     if fpl_data:
         players = fpl_data['elements']
+        teams = fpl_data['teams']
         player_data = []
 
         for player in players:
@@ -25,17 +33,25 @@ def main():
             if player['status'] == 'u' or player.get('loaned_out', False):
                 continue
 
+            # Get the team abbreviation
+            team_abbr = get_team_abbreviation(player['team'], teams)
+
             # Construct the player image URL and force .png extension
             photo_filename = player['photo'].replace('.jpg', '')  # Remove any .jpg extension if present
             image_url = f"https://resources.premierleague.com/premierleague/photos/players/110x140/p{photo_filename}.png"
 
-            # Add the player data
+            # Add the player data, including new fields such as xG and xA
             player_info = {
-                'second_name': player['second_name'],
+                'web_name': player['web_name'],
                 'price': player['now_cost'] / 10,  # Price in millions
-                'position': player['element_type'],
+                'position': {1: 'GK', 2: 'DEF', 3: 'MID', 4: 'FWD'}.get(player['element_type'], 'Unknown'),
+                'team': team_abbr,
                 'avg_points_per_game': player['points_per_game'],
-                'image_url': image_url  # Add image URL
+                'expected_points': player.get('ep_this', 0),  # Expected points for current GW
+                'xG': player.get('expected_goals', 0),  # Expected Goals (using placeholder, replace with real field if available)
+                'xA': player.get('expected_assists', 0),  # Expected Assists (using placeholder, replace with real field if available)
+                'fixture': 'N/A',  # Placeholder for fixture, this will be updated later
+                'image_url': image_url
             }
             player_data.append(player_info)
 
@@ -49,6 +65,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
